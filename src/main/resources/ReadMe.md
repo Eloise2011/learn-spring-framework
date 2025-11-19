@@ -31,3 +31,32 @@ i18n 几点总结:
 3. 
 ![Xnip2025-11-19_14-58-54.png](Note-Pics/Xnip2025-11-19_14-58-54.png)
 ![Xnip2025-11-19_14-55-35.png](Note-Pics/Xnip2025-11-19_14-55-35.png)
+
+
+
+static filtering:
+之所以叫静态过滤是因为过滤是发生在DAO上的, 不同API调用都是运用的同样的过滤规则,所以返回同样的字段, 所以叫"静态"
+ ```java
+@JsonIgnoreProperties({"name","phone"})  //如果这里要ignore number， 应该把card_number加到数组里
+public class BankAccount {
+    private String name;
+    @JsonProperty("card_number")
+    private Long number;
+    private String phone;
+    @JsonIgnore
+    private String address;
+    private int isMasterCard;
+    @JsonFormat(pattern = "yy-MM-dd")
+    @JsonProperty("issue_date")
+    private LocalDate date;
+}
+```
+@JsonIgnoreProperties  & @JsonIgnore 过滤掉三个字段<br/>
+@JsonFormat 的pattern指定是的日期格式为25-11-19<br/>
+@JsonProperty重命名字段
+
+![Xnip2025-11-19_22-09-00.png](Note-Pics/Xnip2025-11-19_22-09-00.png)
+Dynamic filtering:
+但是试想, 有可能在特定场景下,你需要根据不同的REST API返回相同bean的不同attributes. 这时你就需要dynamic filtering
+根据上面静态的filter是定义到DAO,你可能也已经猜到,要想做到动态过滤 i.e. API- specific,那么filter就需要定义到与API本身耦合.
+ 
