@@ -1,5 +1,6 @@
 package com.example.learn_spring_framework.restful.repository;
 
+import com.example.learn_spring_framework.restful.dao.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,12 +18,20 @@ public class CourseJdbcRepository {
     /**
      * this hard-coded query together with the CommandLineRunner can have this SQL executed when the application is being started.
      */
-    String INSERT_QUERY = """
+    String STATIC_INSERT_QUERY = """
             INSERT INTO course (id, name, author) VALUES(3, 'azure', 'microsoft');
             """;
 
-    public void insert_records() {
-        springJdbcTemplate.update(INSERT_QUERY);
+    String DYNAMIC_INSERT_QUERY = """
+            INSERT INTO course (id, name, author) VALUES(?,?,?);
+            """;
+
+    public void static_insert_records() {
+        springJdbcTemplate.update(STATIC_INSERT_QUERY);
+    }
+
+    public void dynamic_insert_records(Course course) {
+        springJdbcTemplate.update(DYNAMIC_INSERT_QUERY, course.getId(), course.getName(), course.getAuthor());
     }
 
 }

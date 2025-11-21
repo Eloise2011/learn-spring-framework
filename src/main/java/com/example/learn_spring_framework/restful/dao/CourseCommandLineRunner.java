@@ -18,6 +18,7 @@ public class CourseCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        courseJdbcRepository.insert_records();
+        courseJdbcRepository.static_insert_records();
+        courseJdbcRepository.dynamic_insert_records(new Course(4, "红楼梦", "曹雪芹"));
     }
 }
